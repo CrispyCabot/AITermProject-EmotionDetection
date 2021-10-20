@@ -11,10 +11,11 @@ import pandas as pd
 import matplotlib.pyplot as plt
 from sklearn.model_selection import train_test_split
 from sklearn.svm import SVC
+from sklearn.tree import DecisionTreeClassifier
 from sklearn.ensemble import RandomForestClassifier
 from sklearn.metrics import classification_report, confusion_matrix
 
-def starterCode():
+def main():
     ''' ### Read csv data '''
     df = pd.read_csv('fer2013\\train.csv')
     print("There are total ", len(df), " sample in the loaded dataset.")
@@ -56,10 +57,9 @@ def starterCode():
     print(X_train.shape, X_test.shape, y_train.shape, y_test.shape)
 
     allModels = []
-    model = makeSVCClassifier(X_train, y_train)
-    allModels.append(model)
-    model = makeRandomForest(X_train, y_train)
-    allModels.append(model)
+    # allModels.append(makeSVCClassifier(X_train, y_train))
+    # allModels.append(makeRandomForest(X_train, y_train))
+    allModels.append(makeDecisionTreeClassifer(X_train, y_train))
 
     for model in allModels:
         # Now that our classifier has been trained, let's make predictions on the test data. To make predictions, the predict method of the DecisionTreeClassifier class is used.
@@ -72,14 +72,23 @@ def starterCode():
 
 def makeSVCClassifier(X_train, y_train):
     svclassifier = SVC(kernel='linear')
+    
     svclassifier.fit(X_train, y_train)
 
     return svclassifier
 
 def makeRandomForest(X_train, y_train):
-    #Create a Gaussian Classifier
-    clf=RandomForestClassifier(n_estimators=100)
+    rfc = RandomForestClassifier(n_estimators=100)
 
-    #Train the model using the training sets y_pred=clf.predict(X_test)
-    clf.fit(X_train,y_train)
-    return clf
+    rfc.fit(X_train,y_train)
+
+    return rfc
+
+def makeDecisionTreeClassifer(X_train, y_train):
+    dtc = DecisionTreeClassifier()
+
+    dtc.fit(X_train, y_train)
+
+    return dtc
+
+main()
