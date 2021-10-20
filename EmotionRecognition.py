@@ -5,7 +5,7 @@ The data consists of 48x48 pixel grayscale images of faces
 The faces have been automatically registered so that the face is more or less centered
 and occupies about the same amount of space in each image
 '''
-
+# https://medium.com/@jsflo.dev/training-a-tensorflow-model-to-recognize-emotions-a20c3bcd6468
 import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
@@ -72,7 +72,7 @@ def main():
 
 def makeSVCClassifier(X_train, y_train):
     svclassifier = SVC(kernel='linear')
-    
+
     svclassifier.fit(X_train, y_train)
 
     return svclassifier
