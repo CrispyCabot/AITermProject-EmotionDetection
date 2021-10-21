@@ -14,6 +14,9 @@ from sklearn.svm import SVC
 from sklearn.tree import DecisionTreeClassifier
 from sklearn.ensemble import RandomForestClassifier
 from sklearn.metrics import classification_report, confusion_matrix
+from sklearn.naive_bayes import GaussianNB
+from sklearn.tree import export_graphviz
+from subprocess import call
 
 def main():
     ''' ### Read csv data '''
@@ -58,10 +61,13 @@ def main():
 
     allModels = []
     # allModels.append(makeSVCClassifier(X_train, y_train))
-    # allModels.append(makeRandomForest(X_train, y_train))
-    allModels.append(makeDecisionTreeClassifer(X_train, y_train))
+    allModels.append(makeRandomForest(X_train, y_train))
+    # allModels.append(makeDecisionTreeClassifer(X_train, y_train))
+    # allModels.append(makeNaieveBayes(X_train, y_train))
 
     for model in allModels:
+        print("Predicting values with model: " + str(type(model)))
+
         # Now that our classifier has been trained, let's make predictions on the test data. To make predictions, the predict method of the DecisionTreeClassifier class is used.
         y_pred = model.predict(X_test)
 
@@ -78,9 +84,14 @@ def makeSVCClassifier(X_train, y_train):
     return svclassifier
 
 def makeRandomForest(X_train, y_train):
-    rfc = RandomForestClassifier(n_estimators=100)
+    rfc = RandomForestClassifier(n_estimators=5)
 
     rfc.fit(X_train,y_train)
+
+    estimator = rfc.estimators_[0]
+
+    export_graphviz(estimator, out_file="tree.dot", rounded=True, proportion=False, precision = 2, filled = True)
+    # call(['dot', '-Tpng', 'tree.dot', '-o', 'tree.png', '-Gdpi=600'])
 
     return rfc
 
@@ -90,5 +101,12 @@ def makeDecisionTreeClassifer(X_train, y_train):
     dtc.fit(X_train, y_train)
 
     return dtc
+
+def makeNaieveBayes(X_train, y_train):
+    gnb = GaussianNB()
+
+    gnb.fit(X_train, y_train)
+
+    return gnb
 
 main()
