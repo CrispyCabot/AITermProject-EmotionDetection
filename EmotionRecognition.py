@@ -16,6 +16,7 @@ from sklearn.ensemble import RandomForestClassifier
 from sklearn.metrics import classification_report, confusion_matrix
 from sklearn.naive_bayes import GaussianNB
 from sklearn.tree import export_graphviz
+from sklearn.neural_network import MLPClassifier
 from subprocess import call
 
 def main():
@@ -60,10 +61,11 @@ def main():
     print(X_train.shape, X_test.shape, y_train.shape, y_test.shape)
 
     allModels = []
-    # allModels.append(makeSVCClassifier(X_train, y_train))
+    allModels.append(makeSVCClassifier(X_train, y_train))
     allModels.append(makeRandomForest(X_train, y_train))
-    # allModels.append(makeDecisionTreeClassifer(X_train, y_train))
-    # allModels.append(makeNaieveBayes(X_train, y_train))
+    allModels.append(makeDecisionTreeClassifer(X_train, y_train))
+    allModels.append(makeNaieveBayes(X_train, y_train))
+    allModels.append(makeNeuralNetwork(X_train, y_train))
 
     for model in allModels:
         print("Predicting values with model: " + str(type(model)))
@@ -108,5 +110,12 @@ def makeNaieveBayes(X_train, y_train):
     gnb.fit(X_train, y_train)
 
     return gnb
+
+def makeNeuralNetwork(X_train, y_train):
+    nn = MLPClassifier(solver='lbfgs', alpha=.001, hidden_layer_sizes=(5, 2), random_state=1)
+
+    nn.fit(X_train, y_train)
+
+    return nn
 
 main()
