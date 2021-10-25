@@ -15,7 +15,7 @@ from sklearn.tree import DecisionTreeClassifier
 from sklearn.ensemble import RandomForestClassifier
 from sklearn.metrics import classification_report, confusion_matrix
 from sklearn.naive_bayes import GaussianNB
-from sklearn.tree import export_graphviz
+from sklearn.tree import export_graphviz, plot_tree
 from sklearn.neural_network import MLPClassifier
 from subprocess import call
 
@@ -61,11 +61,11 @@ def main():
     print(X_train.shape, X_test.shape, y_train.shape, y_test.shape)
 
     allModels = []
-    allModels.append(makeSVCClassifier(X_train, y_train))
+    # allModels.append(makeSVCClassifier(X_train, y_train))
     allModels.append(makeRandomForest(X_train, y_train))
     allModels.append(makeDecisionTreeClassifer(X_train, y_train))
-    allModels.append(makeNaieveBayes(X_train, y_train))
-    allModels.append(makeNeuralNetwork(X_train, y_train))
+    # allModels.append(makeNaieveBayes(X_train, y_train))
+    # allModels.append(makeNeuralNetwork(X_train, y_train))
 
     for model in allModels:
         print("Predicting values with model: " + str(type(model)))
@@ -86,21 +86,28 @@ def makeSVCClassifier(X_train, y_train):
     return svclassifier
 
 def makeRandomForest(X_train, y_train):
-    rfc = RandomForestClassifier(n_estimators=5)
+    rfc = RandomForestClassifier(n_estimators=5, max_leaf_nodes=50, )
 
     rfc.fit(X_train,y_train)
 
-    estimator = rfc.estimators_[0]
-
-    export_graphviz(estimator, out_file="tree.dot", rounded=True, proportion=False, precision = 2, filled = True)
-    # call(['dot', '-Tpng', 'tree.dot', '-o', 'tree.png', '-Gdpi=600'])
+    plt.figure(figsize=(24, 12))
+    print(len(rfc.estimators_))
+    for i in range(5):
+        plot_tree(rfc.estimators_[i], fontsize=6, rounded=True)
+        plt.savefig(f'randomforesttree{i}.png', bbox_inches="tight")
 
     return rfc
 
 def makeDecisionTreeClassifer(X_train, y_train):
-    dtc = DecisionTreeClassifier()
+    dtc = DecisionTreeClassifier(max_leaf_nodes=30, random_state=0, max_depth=6)
 
     dtc.fit(X_train, y_train)
+
+    tree = dtc.tree_
+
+    plt.figure(figsize=(24, 12))
+    plot_tree(dtc, fontsize=6, rounded=True)
+    plt.savefig('decisiontree.png', bbox_inches="tight")
 
     return dtc
 
