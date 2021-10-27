@@ -61,10 +61,13 @@ def main():
     print(X_train.shape, X_test.shape, y_train.shape, y_test.shape)
 
     allModels = []
-    # allModels.append(makeSVCClassifier(X_train, y_train))
-    allModels.append(makeRandomForest(X_train, y_train))
+    
     allModels.append(makeDecisionTreeClassifer(X_train, y_train))
-    # allModels.append(makeNaieveBayes(X_train, y_train))
+    allModels.append(makeRandomForest(X_train, y_train))
+    allModels.append(makeNaieveBayes(X_train, y_train))
+
+
+    # allModels.append(makeSVCClassifier(X_train, y_train))
     # allModels.append(makeNeuralNetwork(X_train, y_train))
 
     for model in allModels:
@@ -85,19 +88,6 @@ def makeSVCClassifier(X_train, y_train):
 
     return svclassifier
 
-def makeRandomForest(X_train, y_train):
-    rfc = RandomForestClassifier(n_estimators=5, max_leaf_nodes=50, )
-
-    rfc.fit(X_train,y_train)
-
-    plt.figure(figsize=(24, 12))
-    print(len(rfc.estimators_))
-    for i in range(5):
-        plot_tree(rfc.estimators_[i], fontsize=6, rounded=True)
-        plt.savefig(f'randomforesttree{i}.png', bbox_inches="tight")
-
-    return rfc
-
 def makeDecisionTreeClassifer(X_train, y_train):
     dtc = DecisionTreeClassifier(max_leaf_nodes=30, random_state=0, max_depth=6)
 
@@ -110,6 +100,19 @@ def makeDecisionTreeClassifer(X_train, y_train):
     plt.savefig('decisiontree.png', bbox_inches="tight")
 
     return dtc
+
+def makeRandomForest(X_train, y_train):
+    rfc = RandomForestClassifier(n_estimators=5, max_leaf_nodes=50, random_state=0)
+
+    rfc.fit(X_train,y_train)
+
+    plt.figure(figsize=(24, 12))
+    print(len(rfc.estimators_))
+    for i in range(5):
+        plot_tree(rfc.estimators_[i], fontsize=6, rounded=True)
+        plt.savefig(f'randomforesttree{i}.png', bbox_inches="tight")
+
+    return rfc
 
 def makeNaieveBayes(X_train, y_train):
     gnb = GaussianNB()
