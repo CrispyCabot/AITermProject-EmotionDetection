@@ -57,18 +57,15 @@ def main():
     plt.show()
 
     ## Split data into training and test sets
-    X_train, X_test, y_train, y_test = train_test_split(faces, y, test_size=0.1, random_state=46)
+    X_train, X_test, y_train, y_test = train_test_split(faces, y, test_size=0.40, random_state=46)
     print(X_train.shape, X_test.shape, y_train.shape, y_test.shape)
 
     allModels = []
     
-    allModels.append(makeDecisionTreeClassifer(X_train, y_train))
-    allModels.append(makeRandomForest(X_train, y_train))
-    allModels.append(makeNaieveBayes(X_train, y_train))
-
-
-    # allModels.append(makeSVCClassifier(X_train, y_train))
-    # allModels.append(makeNeuralNetwork(X_train, y_train))
+    # allModels.append(makeDecisionTreeClassifer(X_train, y_train))
+    # allModels.append(makeRandomForest(X_train, y_train))
+    # allModels.append(makeNaieveBayes(X_train, y_train))
+    allModels.append(makeNeuralNetwork(X_train, y_train))
 
     for model in allModels:
         print("Predicting values with model: " + str(type(model)))
@@ -122,7 +119,7 @@ def makeNaieveBayes(X_train, y_train):
     return gnb
 
 def makeNeuralNetwork(X_train, y_train):
-    nn = MLPClassifier(solver='lbfgs', alpha=.001, hidden_layer_sizes=(5, 2), random_state=1)
+    nn = MLPClassifier(alpha=.001, hidden_layer_sizes=(5, 2), random_state=1)
 
     nn.fit(X_train, y_train)
 
