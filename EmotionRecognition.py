@@ -62,9 +62,9 @@ def main():
 
     allModels = []
     
-    # allModels.append(makeDecisionTreeClassifer(X_train, y_train))
-    # allModels.append(makeRandomForest(X_train, y_train))
-    # allModels.append(makeNaieveBayes(X_train, y_train))
+    allModels.append(makeDecisionTreeClassifer(X_train, y_train))
+    allModels.append(makeRandomForest(X_train, y_train))
+    allModels.append(makeNaieveBayes(X_train, y_train))
     allModels.append(makeNeuralNetwork(X_train, y_train))
 
     for model in allModels:
